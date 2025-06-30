@@ -13,6 +13,7 @@ import Profile from '@/components/pages/Profile';
 import RoleSelection from '@/components/pages/RoleSelection';
 import VoiceToText from '@/components/pages/VoiceToText';
 import UserManagement from '@/components/pages/UserManagement';
+import ExternalApis from '@/components/pages/ExternalApis';
 import Login from '@/components/pages/Login';
 import Signup from '@/components/pages/Signup';
 import Callback from '@/components/pages/Callback';
@@ -137,10 +138,11 @@ function AppContent() {
             <Route index element={<Dashboard />} />
             <Route path="tools" element={<Tools />} />
             <Route path="chat" element={<AIChat />} />
-            <Route path="profile" element={<Profile />} />
+<Route path="profile" element={<Profile />} />
             <Route path="role-selection" element={<RoleSelection />} />
             <Route path="voice" element={<VoiceToText />} />
             <Route path="users" element={<UserManagement />} />
+            <Route path="external-apis" element={<ExternalApis />} />
           </Route>
         </Routes>
         

@@ -1,6 +1,7 @@
-import { NavLink } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import ApperIcon from '@/components/ApperIcon'
+import { NavLink } from "react-router-dom";
+import { motion } from "framer-motion";
+import React from "react";
+import ApperIcon from "@/components/ApperIcon";
 
 const BottomNavigation = () => {
   const navItems = [
@@ -10,7 +11,7 @@ const BottomNavigation = () => {
     { path: '/profile', icon: 'User', label: 'Profile' }
   ]
 
-  return (
+return (
     <nav className="fixed bottom-0 left-0 right-0 bg-surface border-t border-gray-200 px-4 py-2 safe-area-bottom">
       <div className="flex items-center justify-around max-w-md mx-auto">
         {navItems.map((item) => (
@@ -44,7 +45,7 @@ const BottomNavigation = () => {
         ))}
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default BottomNavigation
+export default BottomNavigation;
