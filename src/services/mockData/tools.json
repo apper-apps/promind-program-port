@@ -26,86 +26,30 @@
     },
     {
       "Id": 4,
-      "name": "Unit Converter",
-      "description": "Convert between engineering units and measurements",
-      "icon": "Calculator",
-      "roles": ["engineer"],
+      "name": "Patient Management",
+      "description": "Manage patient records and appointment scheduling",
+      "icon": "Users",
+      "roles": ["doctor"],
       "requiresVIP": false
     },
     {
       "Id": 5,
-      "name": "Formula Solver",
-      "description": "Solve complex engineering formulas and equations",
-      "icon": "Function",
-      "roles": ["engineer"],
+      "name": "Medical Reference",
+      "description": "Quick access to medical guidelines and protocols",
+      "icon": "Book",
+      "roles": ["doctor"],
       "requiresVIP": true
     },
     {
       "Id": 6,
-      "name": "CAD Tools",
-      "description": "Quick CAD calculations and design reference tools",
-      "icon": "Ruler",
-      "roles": ["engineer"],
+      "name": "Prescription Writer",
+      "description": "Digital prescription creation and management",
+      "icon": "FileText",
+      "roles": ["doctor"],
       "requiresVIP": true
     },
     {
       "Id": 7,
-      "name": "Code Generator",
-      "description": "Generate code snippets and boilerplate templates",
-      "icon": "Code",
-      "roles": ["developer"],
-      "requiresVIP": false
-    },
-    {
-      "Id": 8,
-      "name": "StackOverflow Search",
-      "description": "Search and browse StackOverflow directly in the app",
-      "icon": "Search",
-      "roles": ["developer"],
-      "requiresVIP": false
-    },
-    {
-      "Id": 9,
-      "name": "API Tester",
-      "description": "Test REST APIs and view responses with formatting",
-      "icon": "Globe",
-      "roles": ["developer"],
-      "requiresVIP": true
-    },
-    {
-      "Id": 10,
-      "name": "Git Helper",
-      "description": "Git command reference and repository management",
-      "icon": "GitBranch",
-      "roles": ["developer"],
-      "requiresVIP": true
-    },
-    {
-      "Id": 11,
-      "name": "Content Planner",
-      "description": "Plan and schedule social media content across platforms",
-      "icon": "Calendar",
-      "roles": ["social media manager"],
-      "requiresVIP": false
-    },
-    {
-      "Id": 12,
-      "name": "Hashtag Generator",
-      "description": "Generate trending hashtags for your content",
-      "icon": "Hash",
-      "roles": ["social media manager"],
-      "requiresVIP": true
-    },
-    {
-      "Id": 13,
-      "name": "Analytics Dashboard",
-      "description": "Track social media performance and engagement metrics",
-      "icon": "BarChart",
-      "roles": ["social media manager"],
-      "requiresVIP": true
-    },
-    {
-      "Id": 14,
       "name": "Drug Interactions",
       "description": "Check drug interactions and contraindications",
       "icon": "AlertTriangle",
@@ -113,7 +57,7 @@
       "requiresVIP": false
     },
     {
-      "Id": 15,
+      "Id": 8,
       "name": "Dosage Calculator",
       "description": "Calculate proper medication dosages by weight and age",
       "icon": "Calculator",
@@ -121,27 +65,243 @@
       "requiresVIP": true
     },
     {
+      "Id": 9,
+      "name": "Inventory Manager",
+      "description": "Track pharmacy inventory and medication stock levels",
+      "icon": "Package",
+      "roles": ["pharmacist"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 10,
+      "name": "Insurance Checker",
+      "description": "Verify insurance coverage for medications",
+      "icon": "CreditCard",
+      "roles": ["pharmacist"],
+      "requiresVIP": false
+    },
+    {
+      "Id": 11,
+      "name": "Code Generator",
+      "description": "Generate code snippets and boilerplate templates",
+      "icon": "Code",
+      "roles": ["developer"],
+      "requiresVIP": false
+    },
+    {
+      "Id": 12,
+      "name": "StackOverflow Search",
+      "description": "Search and browse StackOverflow directly in the app",
+      "icon": "Search",
+      "roles": ["developer"],
+      "requiresVIP": false
+    },
+    {
+      "Id": 13,
+      "name": "API Tester",
+      "description": "Test REST APIs and view responses with formatting",
+      "icon": "Globe",
+      "roles": ["developer"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 14,
+      "name": "Git Helper",
+      "description": "Git command reference and repository management",
+      "icon": "GitBranch",
+      "roles": ["developer"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 15,
+      "name": "Database Designer",
+      "description": "Design and visualize database schemas",
+      "icon": "Database",
+      "roles": ["developer"],
+      "requiresVIP": true
+    },
+    {
       "Id": 16,
-      "name": "Lesson Planner",
-      "description": "Create and organize lesson plans with templates",
-      "icon": "BookOpen",
-      "roles": ["teacher"],
+      "name": "Regex Builder",
+      "description": "Build and test regular expressions with examples",
+      "icon": "Zap",
+      "roles": ["developer"],
       "requiresVIP": false
     },
     {
       "Id": 17,
-      "name": "Grade Calculator",
-      "description": "Calculate grades and track student progress",
+      "name": "Unit Converter",
+      "description": "Convert between engineering units and measurements",
       "icon": "Calculator",
-      "roles": ["teacher"],
-      "requiresVIP": true
+      "roles": ["engineer"],
+      "requiresVIP": false
     },
     {
       "Id": 18,
-      "name": "Quiz Generator",
-      "description": "Generate quizzes and assessments from content",
-      "icon": "FileQuestion",
-      "roles": ["teacher"],
+      "name": "Formula Solver",
+      "description": "Solve complex engineering formulas and equations",
+      "icon": "Function",
+      "roles": ["engineer"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 19,
+      "name": "CAD Tools",
+      "description": "Quick CAD calculations and design reference tools",
+      "icon": "Ruler",
+      "roles": ["engineer"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 20,
+      "name": "Material Properties",
+      "description": "Database of engineering material properties and specifications",
+      "icon": "Layers",
+      "roles": ["engineer"],
+      "requiresVIP": false
+    },
+    {
+      "Id": 21,
+      "name": "Stress Calculator",
+      "description": "Calculate stress, strain, and load distribution",
+      "icon": "Target",
+      "roles": ["engineer"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 22,
+      "name": "Project Planner",
+      "description": "Engineering project timeline and resource planning",
+      "icon": "Calendar",
+      "roles": ["engineer"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 23,
+      "name": "Content Planner",
+      "description": "Plan and schedule social media content across platforms",
+      "icon": "Calendar",
+      "roles": ["social media manager"],
+      "requiresVIP": false
+    },
+    {
+      "Id": 24,
+      "name": "Hashtag Generator",
+      "description": "Generate trending hashtags for your content",
+      "icon": "Hash",
+      "roles": ["social media manager"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 25,
+      "name": "Analytics Dashboard",
+      "description": "Track social media performance and engagement metrics",
+      "icon": "BarChart",
+      "roles": ["social media manager"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 26,
+      "name": "Image Editor",
+      "description": "Quick image editing and graphic design tools",
+      "icon": "Image",
+      "roles": ["social media manager"],
+      "requiresVIP": false
+    },
+    {
+      "Id": 27,
+      "name": "Competitor Analysis",
+      "description": "Analyze competitor social media strategies and performance",
+      "icon": "TrendingUp",
+      "roles": ["social media manager"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 28,
+      "name": "Brand Monitor",
+      "description": "Monitor brand mentions and sentiment across platforms",
+      "icon": "Eye",
+      "roles": ["social media manager"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 29,
+      "name": "Text Summarizer",
+      "description": "AI-powered text summarization for any content",
+      "icon": "FileText",
+      "roles": ["doctor", "pharmacist", "developer", "engineer", "social media manager", "teacher"],
+      "requiresVIP": false
+    },
+    {
+      "Id": 30,
+      "name": "Language Translator",
+      "description": "Translate text between multiple languages instantly",
+      "icon": "Languages",
+      "roles": ["doctor", "pharmacist", "developer", "engineer", "social media manager", "teacher"],
+      "requiresVIP": false
+    },
+    {
+      "Id": 31,
+      "name": "PDF Converter",
+      "description": "Convert documents to and from PDF format",
+      "icon": "FileType",
+      "roles": ["doctor", "pharmacist", "developer", "engineer", "social media manager", "teacher"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 32,
+      "name": "QR Code Generator",
+      "description": "Generate QR codes for links, text, and contact information",
+      "icon": "QrCode",
+      "roles": ["doctor", "pharmacist", "developer", "engineer", "social media manager", "teacher"],
+      "requiresVIP": false
+    },
+    {
+      "Id": 33,
+      "name": "Password Generator",
+      "description": "Generate secure passwords with customizable criteria",
+      "icon": "Key",
+      "roles": ["doctor", "pharmacist", "developer", "engineer", "social media manager", "teacher"],
+      "requiresVIP": false
+    },
+    {
+      "Id": 34,
+      "name": "Color Palette Generator",
+      "description": "Generate beautiful color palettes for any project",
+      "icon": "Palette",
+      "roles": ["doctor", "pharmacist", "developer", "engineer", "social media manager", "teacher"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 35,
+      "name": "Email Template Builder",
+      "description": "Create professional email templates with drag-and-drop",
+      "icon": "Mail",
+      "roles": ["doctor", "pharmacist", "developer", "engineer", "social media manager", "teacher"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 36,
+      "name": "Time Zone Converter",
+      "description": "Convert time across different time zones worldwide",
+      "icon": "Clock",
+      "roles": ["doctor", "pharmacist", "developer", "engineer", "social media manager", "teacher"],
+      "requiresVIP": false
+    },
+    {
+      "Id": 37,
+      "name": "Markdown Editor",
+      "description": "Write and preview markdown content with live formatting",
+      "icon": "Edit",
+      "roles": ["doctor", "pharmacist", "developer", "engineer", "social media manager", "teacher"],
+      "requiresVIP": false
+    },
+    {
+      "Id": 38,
+      "name": "Invoice Generator",
+      "description": "Create professional invoices and billing documents",
+      "icon": "Receipt",
+      "roles": ["doctor", "pharmacist", "developer", "engineer", "social media manager", "teacher"],
       "requiresVIP": true
     }
   ]
