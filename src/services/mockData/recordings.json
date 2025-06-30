@@ -1,0 +1,39 @@
+{
+  "mockRecordings": [
+    {
+      "Id": 1,
+      "userId": "1",
+      "duration": 45,
+      "transcription": "Patient presents with chest pain, shortness of breath, and elevated blood pressure. Recommend ECG and cardiac enzymes for further evaluation.",
+      "timestamp": "2024-01-20T09:30:00Z"
+    },
+    {
+      "Id": 2,
+      "userId": "1",
+      "duration": 32,
+      "transcription": "Follow-up appointment scheduled for next week. Patient responding well to medication adjustment. Continue current treatment plan.",
+      "timestamp": "2024-01-20T11:15:00Z"
+    },
+    {
+      "Id": 3,
+      "userId": "2",
+      "content": 28,
+      "transcription": "Remember to implement error handling in the API call function. Also need to add loading states to improve user experience.",
+      "timestamp": "2024-01-20T13:45:00Z"
+    },
+    {
+      "Id": 4,
+      "userId": "3",
+      "duration": 51,
+      "transcription": "Bridge specifications: 100-meter span, concrete and steel construction, maximum load requirement 80 tons. Need to verify safety factors.",
+      "timestamp": "2024-01-20T15:20:00Z"
+    },
+    {
+      "Id": 5,
+      "userId": "4",
+      "duration": 23,
+      "transcription": "Content ideas for next week: product launch announcement, behind-the-scenes video, customer testimonials, and industry trend analysis.",
+      "timestamp": "2024-01-20T16:00:00Z"
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "mockTools": [
+    {
+      "Id": 1,
+      "name": "Drug Lookup",
+      "description": "Search comprehensive drug database with interactions and dosages",
+      "icon": "Pill",
+      "roles": ["doctor", "pharmacist"],
+      "requiresVIP": false
+    },
+    {
+      "Id": 2,
+      "name": "Voice Notes",
+      "description": "Record and transcribe medical notes for patient records",
+      "icon": "Mic",
+      "roles": ["doctor", "pharmacist"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 3,
+      "name": "AI Diagnosis",
+      "description": "AI-powered diagnostic assistance and symptom analysis",
+      "icon": "Brain",
+      "roles": ["doctor"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 4,
+      "name": "Unit Converter",
+      "description": "Convert between engineering units and measurements",
+      "icon": "Calculator",
+      "roles": ["engineer"],
+      "requiresVIP": false
+    },
+    {
+      "Id": 5,
+      "name": "Formula Solver",
+      "description": "Solve complex engineering formulas and equations",
+      "icon": "Function",
+      "roles": ["engineer"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 6,
+      "name": "CAD Tools",
+      "description": "Quick CAD calculations and design reference tools",
+      "icon": "Ruler",
+      "roles": ["engineer"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 7,
+      "name": "Code Generator",
+      "description": "Generate code snippets and boilerplate templates",
+      "icon": "Code",
+      "roles": ["developer"],
+      "requiresVIP": false
+    },
+    {
+      "Id": 8,
+      "name": "StackOverflow Search",
+      "description": "Search and browse StackOverflow directly in the app",
+      "icon": "Search",
+      "roles": ["developer"],
+      "requiresVIP": false
+    },
+    {
+      "Id": 9,
+      "name": "API Tester",
+      "description": "Test REST APIs and view responses with formatting",
+      "icon": "Globe",
+      "roles": ["developer"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 10,
+      "name": "Git Helper",
+      "description": "Git command reference and repository management",
+      "icon": "GitBranch",
+      "roles": ["developer"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 11,
+      "name": "Content Planner",
+      "description": "Plan and schedule social media content across platforms",
+      "icon": "Calendar",
+      "roles": ["social media manager"],
+      "requiresVIP": false
+    },
+    {
+      "Id": 12,
+      "name": "Hashtag Generator",
+      "description": "Generate trending hashtags for your content",
+      "icon": "Hash",
+      "roles": ["social media manager"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 13,
+      "name": "Analytics Dashboard",
+      "description": "Track social media performance and engagement metrics",
+      "icon": "BarChart",
+      "roles": ["social media manager"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 14,
+      "name": "Drug Interactions",
+      "description": "Check drug interactions and contraindications",
+      "icon": "AlertTriangle",
+      "roles": ["pharmacist"],
+      "requiresVIP": false
+    },
+    {
+      "Id": 15,
+      "name": "Dosage Calculator",
+      "description": "Calculate proper medication dosages by weight and age",
+      "icon": "Calculator",
+      "roles": ["pharmacist"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 16,
+      "name": "Lesson Planner",
+      "description": "Create and organize lesson plans with templates",
+      "icon": "BookOpen",
+      "roles": ["teacher"],
+      "requiresVIP": false
+    },
+    {
+      "Id": 17,
+      "name": "Grade Calculator",
+      "description": "Calculate grades and track student progress",
+      "icon": "Calculator",
+      "roles": ["teacher"],
+      "requiresVIP": true
+    },
+    {
+      "Id": 18,
+      "name": "Quiz Generator",
+      "description": "Generate quizzes and assessments from content",
+      "icon": "FileQuestion",
+      "roles": ["teacher"],
+      "requiresVIP": true
+    }
+  ]
+}

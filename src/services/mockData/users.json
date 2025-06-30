@@ -1,0 +1,40 @@
+{
+  "mockUsers": [
+    {
+      "Id": 1,
+      "name": "Dr. Sarah Johnson",
+      "email": "sarah.johnson@promind.ai",
+      "role": "Doctor",
+      "plan": "vip",
+      "joinedDate": "2024-01-15T08:30:00Z",
+      "lastActive": "2024-01-20T14:22:00Z"
+    },
+    {
+      "Id": 2,
+      "name": "Alex Chen",
+      "email": "alex.chen@promind.ai",
+      "role": "Developer",
+      "plan": "free",
+      "joinedDate": "2024-01-18T10:15:00Z",
+      "lastActive": "2024-01-20T16:45:00Z"
+    },
+    {
+      "Id": 3,
+      "name": "Maria Rodriguez",
+      "email": "maria.rodriguez@promind.ai",
+      "role": "Engineer",
+      "plan": "vip",
+      "joinedDate": "2024-01-12T09:20:00Z",
+      "lastActive": "2024-01-20T12:30:00Z"
+    },
+    {
+      "Id": 4,
+      "name": "James Wilson",
+      "email": "james.wilson@promind.ai",
+      "role": "Social Media Manager",
+      "plan": "free",
+      "joinedDate": "2024-01-19T11:45:00Z",
+      "lastActive": "2024-01-20T15:10:00Z"
+    }
+  ]
+}
