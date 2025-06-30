@@ -47,8 +47,55 @@ class UserService {
     }
     
     return { ...this.users[userIndex] }
+}
+
+  async updateOpenRouterApiKey(apiKey) {
+    await delay(400)
+    const userIndex = this.users.findIndex(u => u.Id === this.currentUserId)
+    if (userIndex === -1) {
+      throw new Error('User not found')
+    }
+    
+    // Only allow admin users to update API key
+    if (this.users[userIndex].role !== 'admin') {
+      throw new Error('Only admin users can update API key')
+    }
+    
+    this.openRouterApiKey = apiKey
+    this.users[userIndex] = {
+      ...this.users[userIndex],
+      openRouterApiKey: apiKey ? '***' + apiKey.slice(-4) : null, // Mask for display
+      lastActive: new Date().toISOString()
+    }
+    
+    return { ...this.users[userIndex] }
   }
 
+  async getOpenRouterApiKey() {
+    await delay(100)
+    return this.openRouterApiKey
+  }
+
+  async clearOpenRouterApiKey() {
+    await delay(200)
+    const userIndex = this.users.findIndex(u => u.Id === this.currentUserId)
+    if (userIndex === -1) {
+      throw new Error('User not found')
+    }
+    
+    if (this.users[userIndex].role !== 'admin') {
+      throw new Error('Only admin users can clear API key')
+    }
+    
+    this.openRouterApiKey = null
+    this.users[userIndex] = {
+      ...this.users[userIndex],
+      openRouterApiKey: null,
+      lastActive: new Date().toISOString()
+    }
+    
+    return { ...this.users[userIndex] }
+  }
   async getAll() {
     await delay(300)
     return this.users.map(user => ({ ...user }))

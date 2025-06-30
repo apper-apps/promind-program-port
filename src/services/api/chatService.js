@@ -1,4 +1,8 @@
-import { mockMessages } from '@/services/mockData/messages.json'
+import React from "react";
+import Error from "@/components/ui/Error";
+import { userService } from "@/services/api/userService";
+import { openRouterService } from "@/services/api/openRouterService";
+import { mockMessages } from "@/services/mockData/messages.json";
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
@@ -21,7 +25,7 @@ class ChatService {
       .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
   }
 
-  async sendMessage(message) {
+async sendMessage(message, useAI = false) {
     await delay(200)
     const newMessage = {
       Id: Math.max(...this.messages.map(m => m.Id)) + 1,
@@ -30,7 +34,72 @@ class ChatService {
     }
     
     this.messages.push(newMessage)
+    
+    // If this is a user message and AI is enabled, generate AI response
+    if (useAI && message.sender === 'user') {
+      try {
+        const apiKey = await userService.getOpenRouterApiKey()
+        let aiContent = ''
+        
+        if (apiKey) {
+          try {
+            aiContent = await openRouterService.sendChatMessage(
+              message.content,
+              message.userRole,
+              apiKey
+            )
+          } catch (error) {
+            console.error('OpenRouter API failed, using fallback:', error)
+            aiContent = this.generateFallbackResponse(message.content, message.userRole)
+          }
+        } else {
+          aiContent = this.generateFallbackResponse(message.content, message.userRole)
+        }
+        
+        const aiResponse = {
+          Id: Math.max(...this.messages.map(m => m.Id)) + 1,
+          content: aiContent,
+          sender: 'ai',
+          timestamp: new Date().toISOString(),
+          userId: message.userId
+        }
+        
+        this.messages.push(aiResponse)
+        return { userMessage: { ...newMessage }, aiResponse: { ...aiResponse } }
+      } catch (error) {
+        console.error('Failed to generate AI response:', error)
+      }
+    }
+    
     return { ...newMessage }
+  }
+
+  generateFallbackResponse(message, userRole) {
+    const responses = {
+      doctor: [
+        "As a medical professional, I'd be happy to help with your inquiry. However, please remember that this is for informational purposes only.",
+        "Based on your question, here are some general guidelines that might be helpful for healthcare professionals...",
+        "In medical practice, it's important to consider multiple factors. Let me provide some insights..."
+      ],
+      engineer: [
+        "From an engineering perspective, this is an interesting problem. Let me break down the technical aspects...",
+        "This requires careful consideration of the design parameters. Here's my analysis...",
+        "In engineering, we need to consider efficiency and safety. Let me provide some technical insights..."
+      ],
+      developer: [
+        "This is a great programming question! Let me help you with a solution approach...",
+        "From a software development standpoint, there are several ways to tackle this...",
+        "Here's how I would approach this coding challenge with best practices..."
+      ],
+      default: [
+        "That's an interesting question! Let me help you with that...",
+        "Based on your inquiry, here are some thoughts and suggestions...",
+        "I'd be happy to assist you with this. Here's what I think..."
+      ]
+    }
+
+    const roleResponses = responses[userRole?.toLowerCase()] || responses.default
+    return roleResponses[Math.floor(Math.random() * roleResponses.length)]
   }
 
   async getById(id) {

@@ -1,16 +1,16 @@
-import { useState, useEffect, useRef } from 'react'
-import { motion } from 'framer-motion'
-import { toast } from 'react-toastify'
-import Header from '@/components/organisms/Header'
-import ChatMessage from '@/components/molecules/ChatMessage'
-import Button from '@/components/atoms/Button'
-import Input from '@/components/atoms/Input'
-import Loading from '@/components/ui/Loading'
-import Empty from '@/components/ui/Empty'
-import ApperIcon from '@/components/ApperIcon'
-import { chatService } from '@/services/api/chatService'
-import { userService } from '@/services/api/userService'
-
+import React, { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import ApperIcon from "@/components/ApperIcon";
+import Header from "@/components/organisms/Header";
+import Input from "@/components/atoms/Input";
+import Button from "@/components/atoms/Button";
+import ChatMessage from "@/components/molecules/ChatMessage";
+import Empty from "@/components/ui/Empty";
+import Loading from "@/components/ui/Loading";
+import { userService } from "@/services/api/userService";
+import { chatService } from "@/services/api/chatService";
+import { openRouterService } from "@/services/api/openRouterService";
 const AIChat = () => {
   const [messages, setMessages] = useState([])
   const [user, setUser] = useState(null)
@@ -65,20 +65,40 @@ const AIChat = () => {
     setNewMessage('')
     setSending(true)
 
-    try {
-      // Simulate AI response
-      setTimeout(async () => {
-        const aiResponse = {
-          Id: Date.now() + 1,
-          content: generateAIResponse(userMessage.content, user?.role),
-          sender: 'ai',
-          timestamp: new Date().toISOString(),
-          userId: user?.Id || 'anonymous'
+try {
+      // Get user's API key
+      const apiKey = await userService.getOpenRouterApiKey()
+      let aiContent = ''
+
+      if (apiKey) {
+        try {
+          // Use OpenRouter API
+          aiContent = await openRouterService.sendChatMessage(
+            userMessage.content,
+            user?.role,
+            apiKey
+          )
+        } catch (apiError) {
+          console.error('OpenRouter API failed:', apiError)
+          toast.error(apiError.message || 'AI service temporarily unavailable')
+          // Fallback to mock response
+          aiContent = generateAIResponse(userMessage.content, user?.role)
         }
-        
-        setMessages(prev => [...prev, aiResponse])
-        setSending(false)
-      }, 1500)
+      } else {
+        // Use mock response when no API key is configured
+        aiContent = generateAIResponse(userMessage.content, user?.role)
+      }
+
+      const aiResponse = {
+        Id: Date.now() + 1,
+        content: aiContent,
+        sender: 'ai',
+        timestamp: new Date().toISOString(),
+        userId: user?.Id || 'anonymous'
+      }
+      
+      setMessages(prev => [...prev, aiResponse])
+      setSending(false)
       
     } catch (error) {
       console.error('Failed to send message:', error)

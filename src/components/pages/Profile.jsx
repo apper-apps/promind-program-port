@@ -30,7 +30,34 @@ const Profile = () => {
     }
   }
 
+const handleApiKeyUpdate = async (newApiKey) => {
+    try {
+      await userService.updateOpenRouterApiKey(newApiKey)
+      toast.success('API key updated successfully!')
+      loadUserData() // Refresh user data
+    } catch (error) {
+      console.error('Failed to update API key:', error)
+      toast.error('Failed to update API key')
+    }
+  }
+
   const profileSections = [
+    // Admin Settings - only show for admin users
+    ...(user?.role === 'admin' ? [{
+      title: 'Admin Settings',
+      items: [
+        { 
+          label: 'OpenRouter API Configuration', 
+          icon: 'Settings', 
+          action: () => {
+            const newKey = prompt('Enter OpenRouter API Key:', user?.openRouterApiKey || '')
+            if (newKey !== null) {
+              handleApiKeyUpdate(newKey)
+            }
+          }
+        }
+      ]
+    }] : []),
     {
       title: 'Account Settings',
       items: [
