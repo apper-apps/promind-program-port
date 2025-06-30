@@ -328,6 +328,4 @@ class ChatService {
     }
   }
 }
-
-export const chatService = new ChatService()
 export const chatService = new ChatService()
