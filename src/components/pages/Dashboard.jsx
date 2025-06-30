@@ -6,9 +6,11 @@ import Button from '@/components/atoms/Button'
 import ApperIcon from '@/components/ApperIcon'
 import Loading from '@/components/ui/Loading'
 import { userService } from '@/services/api/userService'
+import { useSelector } from 'react-redux'
 
 const Dashboard = () => {
-  const navigate = useNavigate()
+const navigate = useNavigate()
+  const { user: authUser } = useSelector((state) => state.user)
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -65,9 +67,9 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header 
-        title="ProMind AI" 
-        subtitle={user ? `Welcome back, ${user.name}` : "Welcome to ProMind AI"}
-        user={user}
+title="ProMind AI" 
+        subtitle={user ? `Welcome back, ${user.Name}` : authUser ? `Welcome back, ${authUser.firstName}` : "Welcome to ProMind AI"}
+        user={user || authUser}
       />
       
       <div className="p-4 space-y-6">
@@ -79,17 +81,17 @@ const Dashboard = () => {
         >
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-bold mb-2">
-                {user ? `Hello, ${user.name}!` : "Welcome to ProMind AI!"}
+<h2 className="text-lg font-bold mb-2">
+                {user ? `Hello, ${user.Name}!` : authUser ? `Hello, ${authUser.firstName}!` : "Welcome to ProMind AI!"}
               </h2>
-              <p className="text-white/80 text-sm">
-                {user ? `Ready to boost your productivity as a ${user.role}?` : "Your AI-powered productivity assistant"}
+<p className="text-white/80 text-sm">
+                {user?.role ? `Ready to boost your productivity as a ${user.role}?` : "Your AI-powered productivity assistant"}
               </p>
-              {user?.role && (
+{(user?.role || authUser?.role) && (
                 <div className="mt-3">
                   <span className="inline-flex items-center px-3 py-1 bg-white/20 rounded-full text-xs font-medium">
                     <ApperIcon name="Briefcase" size={14} className="mr-1" />
-                    {user.role}
+{user?.role || authUser?.role}
                   </span>
                 </div>
               )}

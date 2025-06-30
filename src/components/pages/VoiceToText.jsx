@@ -1,13 +1,16 @@
-import { useState, useEffect, useRef } from 'react'
-import { motion } from 'framer-motion'
-import { toast } from 'react-toastify'
-import Header from '@/components/organisms/Header'
-import Button from '@/components/atoms/Button'
-import ApperIcon from '@/components/ApperIcon'
-import { voiceService } from '@/services/api/voiceService'
-import { userService } from '@/services/api/userService'
+import React, { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { formatTime } from "@/utils/dateUtils";
+import ApperIcon from "@/components/ApperIcon";
+import Header from "@/components/organisms/Header";
+import Button from "@/components/atoms/Button";
+import { userService } from "@/services/api/userService";
+import { voiceService } from "@/services/api/voiceService";
 
 const VoiceToText = () => {
+  const { user: authUser } = useSelector((state) => state.user);
   const [user, setUser] = useState(null)
   const [isRecording, setIsRecording] = useState(false)
   const [recordingTime, setRecordingTime] = useState(0)
@@ -58,17 +61,16 @@ const VoiceToText = () => {
     try {
       // Simulate transcription process
       const mockTranscription = generateMockTranscription()
-      setTranscription(mockTranscription)
+setTranscription(mockTranscription)
       
       const newRecording = await voiceService.saveRecording({
         duration: recordingTime,
         transcription: mockTranscription,
-        userId: user?.Id || 'anonymous'
-      })
+        userId: user?.Id || authUser?.userId || 'anonymous'
+      });
       
       setRecordings(prev => [newRecording, ...prev])
       toast.success('Recording saved successfully!')
-      
     } catch (error) {
       console.error('Failed to save recording:', error)
       toast.error('Failed to save recording')
@@ -111,9 +113,9 @@ const VoiceToText = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header 
-        title="Voice to Text" 
+title="Voice to Text" 
         subtitle="Convert speech to text instantly"
-        user={user}
+        user={user || authUser}
       />
       
       <div className="p-4 space-y-6">

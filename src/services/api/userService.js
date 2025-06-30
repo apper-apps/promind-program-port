@@ -1,153 +1,300 @@
-import { mockUsers } from '@/services/mockData/users.json'
-
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+import { toast } from 'react-toastify'
 
 class UserService {
   constructor() {
-    this.users = [...mockUsers]
-    this.currentUserId = 1 // Simulate logged in user
+    // Initialize ApperClient
+    const { ApperClient } = window.ApperSDK;
+    this.apperClient = new ApperClient({
+      apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+      apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+    });
+    this.tableName = 'app_User';
+    this.openRouterApiKey = null;
   }
 
-  async getCurrentUser() {
-    await delay(300)
-    const user = this.users.find(u => u.Id === this.currentUserId)
-    if (!user) {
-      throw new Error('User not found')
-    }
-    return { ...user }
-  }
-
-  async updateUserRole(role) {
-    await delay(400)
-    const userIndex = this.users.findIndex(u => u.Id === this.currentUserId)
-    if (userIndex === -1) {
-      throw new Error('User not found')
-    }
-    
-    this.users[userIndex] = {
-      ...this.users[userIndex],
-      role,
-      lastActive: new Date().toISOString()
-    }
-    
-    return { ...this.users[userIndex] }
-  }
-
-  async updateUserPlan(plan) {
-    await delay(400)
-    const userIndex = this.users.findIndex(u => u.Id === this.currentUserId)
-    if (userIndex === -1) {
-      throw new Error('User not found')
-    }
-    
-    this.users[userIndex] = {
-      ...this.users[userIndex],
-      plan,
-      lastActive: new Date().toISOString()
-    }
-    
-    return { ...this.users[userIndex] }
-}
-
-  async updateOpenRouterApiKey(apiKey) {
-    await delay(400)
-    const userIndex = this.users.findIndex(u => u.Id === this.currentUserId)
-    if (userIndex === -1) {
-      throw new Error('User not found')
-    }
-    
-    // Only allow admin users to update API key
-    if (this.users[userIndex].role !== 'admin') {
-      throw new Error('Only admin users can update API key')
-    }
-    
-    this.openRouterApiKey = apiKey
-    this.users[userIndex] = {
-      ...this.users[userIndex],
-      openRouterApiKey: apiKey ? '***' + apiKey.slice(-4) : null, // Mask for display
-      lastActive: new Date().toISOString()
-    }
-    
-    return { ...this.users[userIndex] }
-  }
-
-  async getOpenRouterApiKey() {
-    await delay(100)
-    return this.openRouterApiKey
-  }
-
-  async clearOpenRouterApiKey() {
-    await delay(200)
-    const userIndex = this.users.findIndex(u => u.Id === this.currentUserId)
-    if (userIndex === -1) {
-      throw new Error('User not found')
-    }
-    
-    if (this.users[userIndex].role !== 'admin') {
-      throw new Error('Only admin users can clear API key')
-    }
-    
-    this.openRouterApiKey = null
-    this.users[userIndex] = {
-      ...this.users[userIndex],
-      openRouterApiKey: null,
-      lastActive: new Date().toISOString()
-    }
-    
-    return { ...this.users[userIndex] }
-  }
   async getAll() {
-    await delay(300)
-    return this.users.map(user => ({ ...user }))
+    try {
+      const params = {
+        fields: [
+          { field: { "Name": "Name" } },
+          { field: { "Name": "email" } },
+          { field: { "Name": "role" } },
+          { field: { "Name": "plan" } },
+          { field: { "Name": "joined_date" } },
+          { field: { "Name": "last_active" } },
+          { field: { "Name": "open_router_api_key" } },
+          { field: { "Name": "Tags" } },
+          { field: { "Name": "Owner" } }
+        ],
+        orderBy: [
+          { fieldName: "Name", sorttype: "ASC" }
+        ]
+      };
+      
+      const response = await this.apperClient.fetchRecords(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return [];
+      }
+      
+      return response.data || [];
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      throw error;
+    }
   }
 
   async getById(id) {
-    await delay(250)
-    const user = this.users.find(u => u.Id === id)
-    if (!user) {
-      throw new Error('User not found')
+    try {
+      const params = {
+        fields: [
+          { field: { "Name": "Name" } },
+          { field: { "Name": "email" } },
+          { field: { "Name": "role" } },
+          { field: { "Name": "plan" } },
+          { field: { "Name": "joined_date" } },
+          { field: { "Name": "last_active" } },
+          { field: { "Name": "open_router_api_key" } },
+          { field: { "Name": "Tags" } },
+          { field: { "Name": "Owner" } }
+        ]
+      };
+      
+      const response = await this.apperClient.getRecordById(this.tableName, parseInt(id), params);
+      
+      if (!response || !response.data) {
+        return null;
+      }
+      
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching user with ID ${id}:`, error);
+      return null;
     }
-    return { ...user }
   }
 
   async create(data) {
-    await delay(400)
-    const newUser = {
-      Id: Math.max(...this.users.map(u => u.Id)) + 1,
-      ...data,
-      joinedDate: new Date().toISOString(),
-      lastActive: new Date().toISOString()
+    try {
+      const params = {
+        records: [
+          {
+            Name: data.name,
+            email: data.email,
+            role: data.role,
+            plan: data.plan || 'free',
+            joined_date: new Date().toISOString(),
+            last_active: new Date().toISOString(),
+            Tags: data.Tags || '',
+            Owner: data.Owner || null
+          }
+        ]
+      };
+      
+      const response = await this.apperClient.createRecord(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return null;
+      }
+      
+      if (response.results) {
+        const successfulRecords = response.results.filter(result => result.success);
+        const failedRecords = response.results.filter(result => !result.success);
+        
+        if (failedRecords.length > 0) {
+          console.error(`Failed to create ${failedRecords.length} users:${JSON.stringify(failedRecords)}`);
+          
+          failedRecords.forEach(record => {
+            record.errors?.forEach(error => {
+              toast.error(`${error.fieldLabel}: ${error.message}`);
+            });
+            if (record.message) toast.error(record.message);
+          });
+        }
+        
+        return successfulRecords.length > 0 ? successfulRecords[0].data : null;
+      }
+    } catch (error) {
+      console.error("Error creating user:", error);
+      throw error;
     }
-    
-    this.users.push(newUser)
-    return { ...newUser }
   }
 
   async update(id, data) {
-    await delay(400)
-    const userIndex = this.users.findIndex(u => u.Id === id)
-    if (userIndex === -1) {
-      throw new Error('User not found')
+    try {
+      const updateData = {};
+      if (data.name !== undefined) updateData.Name = data.name;
+      if (data.email !== undefined) updateData.email = data.email;
+      if (data.role !== undefined) updateData.role = data.role;
+      if (data.plan !== undefined) updateData.plan = data.plan;
+      if (data.Tags !== undefined) updateData.Tags = data.Tags;
+      if (data.Owner !== undefined) updateData.Owner = data.Owner;
+      
+      const params = {
+        records: [
+          {
+            Id: parseInt(id),
+            ...updateData,
+            last_active: new Date().toISOString()
+          }
+        ]
+      };
+      
+      const response = await this.apperClient.updateRecord(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return null;
+      }
+      
+      if (response.results) {
+        const successfulUpdates = response.results.filter(result => result.success);
+        const failedUpdates = response.results.filter(result => !result.success);
+        
+        if (failedUpdates.length > 0) {
+          console.error(`Failed to update ${failedUpdates.length} users:${JSON.stringify(failedUpdates)}`);
+          
+          failedUpdates.forEach(record => {
+            record.errors?.forEach(error => {
+              toast.error(`${error.fieldLabel}: ${error.message}`);
+            });
+            if (record.message) toast.error(record.message);
+          });
+        }
+        
+        return successfulUpdates.length > 0 ? successfulUpdates[0].data : null;
+      }
+    } catch (error) {
+      console.error("Error updating user:", error);
+      throw error;
     }
-    
-    this.users[userIndex] = {
-      ...this.users[userIndex],
-      ...data,
-      lastActive: new Date().toISOString()
-    }
-    
-    return { ...this.users[userIndex] }
   }
 
   async delete(id) {
-    await delay(300)
-    const userIndex = this.users.findIndex(u => u.Id === id)
-    if (userIndex === -1) {
-      throw new Error('User not found')
+    try {
+      const params = {
+        RecordIds: [parseInt(id)]
+      };
+      
+      const response = await this.apperClient.deleteRecord(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return false;
+      }
+      
+      if (response.results) {
+        const successfulDeletions = response.results.filter(result => result.success);
+        const failedDeletions = response.results.filter(result => !result.success);
+        
+        if (failedDeletions.length > 0) {
+          console.error(`Failed to delete ${failedDeletions.length} users:${JSON.stringify(failedDeletions)}`);
+          
+          failedDeletions.forEach(record => {
+            if (record.message) toast.error(record.message);
+          });
+        }
+        
+        return successfulDeletions.length > 0;
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      throw error;
     }
-    
-    this.users.splice(userIndex, 1)
-    return true
+  }
+
+  async getCurrentUser() {
+    // In a real implementation, this would get the current authenticated user
+    // For now, return the first user as a placeholder
+    try {
+      const users = await this.getAll();
+      return users.length > 0 ? users[0] : null;
+    } catch (error) {
+      console.error('Failed to get current user:', error);
+      return null;
+    }
+  }
+
+  async updateUserRole(role) {
+    try {
+      const currentUser = await this.getCurrentUser();
+      if (!currentUser) {
+        throw new Error('User not found');
+      }
+      
+      return await this.update(currentUser.Id, { role });
+    } catch (error) {
+      console.error('Failed to update user role:', error);
+      throw error;
+    }
+  }
+
+  async updateUserPlan(plan) {
+    try {
+      const currentUser = await this.getCurrentUser();
+      if (!currentUser) {
+        throw new Error('User not found');
+      }
+      
+      return await this.update(currentUser.Id, { plan });
+    } catch (error) {
+      console.error('Failed to update user plan:', error);
+      throw error;
+    }
+  }
+
+  async updateOpenRouterApiKey(apiKey) {
+    try {
+      const currentUser = await this.getCurrentUser();
+      if (!currentUser) {
+        throw new Error('User not found');
+      }
+      
+      if (currentUser.role !== 'admin') {
+        throw new Error('Only admin users can update API key');
+      }
+      
+      this.openRouterApiKey = apiKey;
+      const maskedKey = apiKey ? '***' + apiKey.slice(-4) : null;
+      
+      return await this.update(currentUser.Id, { 
+        open_router_api_key: maskedKey 
+      });
+    } catch (error) {
+      console.error('Failed to update API key:', error);
+      throw error;
+    }
+  }
+
+  async getOpenRouterApiKey() {
+    return this.openRouterApiKey;
+  }
+
+  async clearOpenRouterApiKey() {
+    try {
+      const currentUser = await this.getCurrentUser();
+      if (!currentUser) {
+        throw new Error('User not found');
+      }
+      
+      if (currentUser.role !== 'admin') {
+        throw new Error('Only admin users can clear API key');
+      }
+      
+      this.openRouterApiKey = null;
+      
+      return await this.update(currentUser.Id, { 
+        open_router_api_key: null 
+      });
+    } catch (error) {
+      console.error('Failed to clear API key:', error);
+      throw error;
+    }
   }
 }
 

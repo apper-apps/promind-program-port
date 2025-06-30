@@ -7,9 +7,11 @@ import RoleCard from '@/components/molecules/RoleCard'
 import Button from '@/components/atoms/Button'
 import { roleService } from '@/services/api/roleService'
 import { userService } from '@/services/api/userService'
+import { useSelector } from 'react-redux'
 
 const RoleSelection = () => {
-  const navigate = useNavigate()
+const navigate = useNavigate()
+  const { user: authUser } = useSelector((state) => state.user)
   const [selectedRole, setSelectedRole] = useState(null)
   const [saving, setSaving] = useState(false)
 
@@ -24,7 +26,7 @@ const RoleSelection = () => {
 
     setSaving(true)
     try {
-      await userService.updateUserRole(selectedRole.name)
+await userService.updateUserRole(selectedRole.name)
       toast.success(`Welcome, ${selectedRole.name}! Your role has been updated.`)
       navigate('/')
     } catch (error) {

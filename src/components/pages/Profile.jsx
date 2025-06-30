@@ -8,9 +8,11 @@ import Badge from '@/components/atoms/Badge'
 import Loading from '@/components/ui/Loading'
 import ApperIcon from '@/components/ApperIcon'
 import { userService } from '@/services/api/userService'
+import { useSelector } from 'react-redux'
 
 const Profile = () => {
-  const navigate = useNavigate()
+const navigate = useNavigate()
+  const { user: authUser } = useSelector((state) => state.user)
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -18,7 +20,7 @@ const Profile = () => {
     loadUserData()
   }, [])
 
-  const loadUserData = async () => {
+const loadUserData = async () => {
     try {
       const userData = await userService.getCurrentUser()
       setUser(userData)
@@ -108,14 +110,14 @@ const handleApiKeyUpdate = async (newApiKey) => {
         >
           <div className="flex items-center space-x-4">
             <div className="w-16 h-16 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white text-xl font-bold">
-              {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+{user?.Name ? user.Name.charAt(0).toUpperCase() : authUser?.firstName?.charAt(0).toUpperCase() || 'U'}
             </div>
             
             <div className="flex-1">
-              <h2 className="text-xl font-bold text-gray-900">
-                {user?.name || 'User'}
+<h2 className="text-xl font-bold text-gray-900">
+                {user?.Name || authUser?.firstName + ' ' + authUser?.lastName || 'User'}
               </h2>
-              <p className="text-gray-600">{user?.email || 'user@promind.ai'}</p>
+              <p className="text-gray-600">{user?.email || authUser?.emailAddress || 'user@promind.ai'}</p>
               
               <div className="flex items-center space-x-3 mt-2">
                 {user?.role && (

@@ -124,14 +124,18 @@ const Tools = () => {
         ) : (
           <div className="space-y-4">
             {filteredTools.map((tool, index) => (
-              <motion.div
+<motion.div
                 key={tool.Id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
                 <ToolCard
-                  tool={tool}
+tool={{
+                    ...tool,
+                    name: tool.Name,
+                    requiresVIP: tool.requires_vip
+                  }}
                   onSelect={handleToolSelect}
                   userPlan={user?.plan || 'free'}
                 />

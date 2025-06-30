@@ -10,6 +10,7 @@ import Error from '@/components/ui/Error'
 import Empty from '@/components/ui/Empty'
 import ApperIcon from '@/components/ApperIcon'
 import { userService } from '@/services/api/userService'
+import { useSelector } from 'react-redux'
 import { roleService } from '@/services/api/roleService'
 
 const UserManagement = () => {
@@ -171,7 +172,7 @@ const UserManagement = () => {
         ) : (
           <div className="space-y-3">
             {filteredUsers.map((user, index) => (
-              <motion.div
+<motion.div
                 key={user.Id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -180,19 +181,19 @@ const UserManagement = () => {
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white font-bold">
-                      {user.name.charAt(0).toUpperCase()}
+<div className="w-12 h-12 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white font-bold">
+                      {user.Name?.charAt(0).toUpperCase() || 'U'}
                     </div>
                     
-                    <div>
-                      <h4 className="font-semibold text-gray-900">{user.name}</h4>
+<div>
+                      <h4 className="font-semibold text-gray-900">{user.Name}</h4>
                       <p className="text-sm text-gray-600">{user.email}</p>
                       <div className="flex items-center space-x-2 mt-1">
                         {user.role && (
                           <Badge variant="primary" size="sm">
                             {user.role}
                           </Badge>
-                        )}
+)}
                         <Badge variant={user.plan === 'vip' ? 'vip' : 'default'} size="sm">
                           {user.plan === 'vip' ? 'VIP' : 'Free'}
                         </Badge>
@@ -246,8 +247,8 @@ const UserManagement = () => {
 }
 
 const UserModal = ({ user, roles, onSave, onClose }) => {
-  const [formData, setFormData] = useState({
-    name: user?.name || '',
+const [formData, setFormData] = useState({
+    name: user?.Name || '',
     email: user?.email || '',
     role: user?.role || '',
     plan: user?.plan || 'free'

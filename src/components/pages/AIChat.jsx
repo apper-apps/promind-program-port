@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 import ApperIcon from "@/components/ApperIcon";
 import Header from "@/components/organisms/Header";
 import Input from "@/components/atoms/Input";
@@ -9,10 +10,11 @@ import ChatMessage from "@/components/molecules/ChatMessage";
 import Empty from "@/components/ui/Empty";
 import Loading from "@/components/ui/Loading";
 import { userService } from "@/services/api/userService";
-import { chatService } from "@/services/api/chatService";
 import { openRouterService } from "@/services/api/openRouterService";
+import { chatService } from "@/services/api/chatService";
 const AIChat = () => {
-  const [messages, setMessages] = useState([])
+const [messages, setMessages] = useState([])
+  const { user: authUser } = useSelector((state) => state.user)
   const [user, setUser] = useState(null)
   const [newMessage, setNewMessage] = useState('')
   const [loading, setLoading] = useState(true)
@@ -56,9 +58,9 @@ const AIChat = () => {
     const userMessage = {
       Id: Date.now(),
       content: newMessage.trim(),
-      sender: 'user',
+sender: 'user',
       timestamp: new Date().toISOString(),
-      userId: user?.Id || 'anonymous'
+      userId: user?.Id || authUser?.userId || 'anonymous'
     }
 
     setMessages(prev => [...prev, userMessage])
@@ -89,12 +91,12 @@ try {
         aiContent = generateAIResponse(userMessage.content, user?.role)
       }
 
-      const aiResponse = {
+const aiResponse = {
         Id: Date.now() + 1,
         content: aiContent,
         sender: 'ai',
         timestamp: new Date().toISOString(),
-        userId: user?.Id || 'anonymous'
+        userId: user?.Id || authUser?.userId || 'anonymous'
       }
       
       setMessages(prev => [...prev, aiResponse])
@@ -149,9 +151,9 @@ try {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header 
-        title="AI Assistant" 
-        subtitle={user?.role ? `${user.role} AI Assistant` : "Your AI companion"}
-        user={user}
+title="AI Assistant" 
+        subtitle={(user?.role || authUser?.role) ? `${user?.role || authUser?.role} AI Assistant` : "Your AI companion"}
+        user={user || authUser}
       />
       
       <div className="flex-1 flex flex-col">
