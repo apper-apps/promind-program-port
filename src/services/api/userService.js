@@ -15,7 +15,7 @@ class UserService {
   async getAll() {
     try {
       const params = {
-        fields: [
+fields: [
           { field: { "Name": "Name" } },
           { field: { "Name": "email" } },
           { field: { "Name": "role" } },
@@ -23,6 +23,9 @@ class UserService {
           { field: { "Name": "joined_date" } },
           { field: { "Name": "last_active" } },
           { field: { "Name": "open_router_api_key" } },
+          { field: { "Name": "last_login_time" } },
+          { field: { "Name": "failed_login_attempts" } },
+          { field: { "Name": "session_token" } },
           { field: { "Name": "Tags" } },
           { field: { "Name": "Owner" } }
         ],
@@ -49,7 +52,7 @@ class UserService {
   async getById(id) {
     try {
       const params = {
-        fields: [
+fields: [
           { field: { "Name": "Name" } },
           { field: { "Name": "email" } },
           { field: { "Name": "role" } },
@@ -57,6 +60,9 @@ class UserService {
           { field: { "Name": "joined_date" } },
           { field: { "Name": "last_active" } },
           { field: { "Name": "open_router_api_key" } },
+          { field: { "Name": "last_login_time" } },
+          { field: { "Name": "failed_login_attempts" } },
+          { field: { "Name": "session_token" } },
           { field: { "Name": "Tags" } },
           { field: { "Name": "Owner" } }
         ]
@@ -125,11 +131,14 @@ class UserService {
 
   async update(id, data) {
     try {
-      const updateData = {};
+const updateData = {};
       if (data.name !== undefined) updateData.Name = data.name;
       if (data.email !== undefined) updateData.email = data.email;
       if (data.role !== undefined) updateData.role = data.role;
       if (data.plan !== undefined) updateData.plan = data.plan;
+      if (data.last_login_time !== undefined) updateData.last_login_time = data.last_login_time;
+      if (data.failed_login_attempts !== undefined) updateData.failed_login_attempts = data.failed_login_attempts;
+      if (data.session_token !== undefined) updateData.session_token = data.session_token;
       if (data.Tags !== undefined) updateData.Tags = data.Tags;
       if (data.Owner !== undefined) updateData.Owner = data.Owner;
       
