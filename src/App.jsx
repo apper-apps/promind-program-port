@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import { setUser, clearUser } from '@/store/userSlice';
 import store from '@/store';
 import Layout from '@/components/organisms/Layout';
+import Home from '@/components/pages/Home';
 import Dashboard from '@/components/pages/Dashboard';
 import Tools from '@/components/pages/Tools';
 import AIChat from '@/components/pages/AIChat';
@@ -64,11 +65,11 @@ function AppContent() {
           } else if (!isAuthPage) {
             if (!currentPath.includes('/login') && !currentPath.includes('/signup')) {
               navigate(currentPath);
-            } else {
-              navigate('/');
+} else {
+              navigate('/dashboard');
             }
           } else {
-            navigate('/');
+            navigate('/dashboard');
           }
           // Store user information in Redux
           dispatch(setUser(JSON.parse(JSON.stringify(user))));
@@ -79,8 +80,8 @@ function AppContent() {
               currentPath.includes('/signup')
                 ? `/signup?redirect=${currentPath}`
                 : currentPath.includes('/login')
-                ? `/login?redirect=${currentPath}`
-                : '/login'
+? `/login?redirect=${currentPath}`
+                : '/'
             );
           } else if (redirectPath) {
             if (
@@ -134,8 +135,9 @@ function AppContent() {
           <Route path="/error" element={<ErrorPage />} />
           <Route path="/prompt-password/:appId/:emailAddress/:provider" element={<PromptPassword />} />
           <Route path="/reset-password/:appId/:fields" element={<ResetPassword />} />
+<Route path="/" element={<Home />} />
           <Route path="/" element={<Layout />}>
-            <Route index element={<Dashboard />} />
+            <Route path="dashboard" element={<Dashboard />} />
             <Route path="tools" element={<Tools />} />
             <Route path="chat" element={<AIChat />} />
 <Route path="profile" element={<Profile />} />
