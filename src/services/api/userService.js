@@ -98,7 +98,12 @@ fields: [
         ]
       };
       
-      const response = await this.apperClient.createRecord(this.tableName, params);
+// Ensure params has records array structure for bulk creation
+      const createParams = {
+        records: Array.isArray(params.records) ? params.records : [params]
+      };
+      
+      const response = await this.apperClient.createRecord(this.tableName, createParams);
       
       if (!response.success) {
         console.error(response.message);

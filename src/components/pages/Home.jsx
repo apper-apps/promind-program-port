@@ -59,7 +59,7 @@ function Home() {
   const [selectedRole, setSelectedRole] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const handleRoleSelect = async (roleId) => {
+const handleRoleSelect = async (roleId) => {
     if (loading) return;
     
     setSelectedRole(roleId);
@@ -67,12 +67,13 @@ function Home() {
 
     try {
       // Create a temporary user record with the selected role
-      // Since we don't have a specific user ID yet, we'll create a record
-      // that can be updated later during authentication
+      // Using only Updateable fields from app_User table schema
       const userData = {
         role: roleId,
-        Name: `${roleId} User`, // Temporary name
-        email: `temp_${roleId}@example.com` // Temporary email
+        Name: `${roleId} User`, // Temporary name - matches "Name" field
+        email: `temp_${roleId}@example.com`, // Temporary email - matches "email" field
+        plan: "free", // Default plan from picklist values
+        joined_date: new Date().toISOString() // Current timestamp in ISO format
       };
 
       await userService.create(userData);
