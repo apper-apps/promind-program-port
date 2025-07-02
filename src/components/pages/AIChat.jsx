@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import ApperIcon from "@/components/ApperIcon";
 import Header from "@/components/organisms/Header";
 import Input from "@/components/atoms/Input";
@@ -9,11 +10,12 @@ import Button from "@/components/atoms/Button";
 import ChatMessage from "@/components/molecules/ChatMessage";
 import Empty from "@/components/ui/Empty";
 import Loading from "@/components/ui/Loading";
-import { userService } from "@/services/api/userService";
+import Tools from "@/components/pages/Tools";
 import { openRouterService } from "@/services/api/openRouterService";
+import { userService } from "@/services/api/userService";
 import { chatService } from "@/services/api/chatService";
 const AIChat = () => {
-const [messages, setMessages] = useState([])
+  const [messages, setMessages] = useState([]);
   const { user: authUser } = useSelector((state) => state.user)
   const [user, setUser] = useState(null)
   const [newMessage, setNewMessage] = useState('')
@@ -57,8 +59,8 @@ const [messages, setMessages] = useState([])
 
     const userMessage = {
       Id: Date.now(),
-      content: newMessage.trim(),
-sender: 'user',
+content: newMessage.trim(),
+      sender: 'user',
       timestamp: new Date().toISOString(),
       userId: user?.Id || authUser?.userId || 'anonymous'
     }
@@ -150,8 +152,8 @@ const aiResponse = {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <Header 
-title="AI Assistant" 
+<Header 
+        title="AI Assistant" 
         subtitle={(user?.role || authUser?.role) ? `${user?.role || authUser?.role} AI Assistant` : "Your AI companion"}
         user={user || authUser}
       />
@@ -197,33 +199,90 @@ title="AI Assistant"
           )}
         </div>
 
-        {/* Input Area */}
+{/* Input Area - Conditional based on VIP status */}
         <div className="border-t border-gray-200 bg-surface p-4">
-          <form onSubmit={handleSendMessage} className="max-w-4xl mx-auto">
-            <div className="flex items-end space-x-3">
-              <div className="flex-1">
-                <Input
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  placeholder="Type your message..."
-                  disabled={sending}
-                  className="border-gray-200 focus:border-primary-500"
-                />
+          {user?.plan === 'vip' ? (
+            <form onSubmit={handleSendMessage} className="max-w-4xl mx-auto">
+              <div className="flex items-end space-x-3">
+                <div className="flex-1">
+                  <Input
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    placeholder="Type your message..."
+                    disabled={sending}
+                    className="border-gray-200 focus:border-primary-500"
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  disabled={!newMessage.trim() || sending}
+                  loading={sending}
+                  className="px-4 py-3"
+                >
+                  <ApperIcon name="Send" size={18} />
+                </Button>
               </div>
-              <Button
-                type="submit"
-                disabled={!newMessage.trim() || sending}
-                loading={sending}
-                className="px-4 py-3"
-              >
-                <ApperIcon name="Send" size={18} />
-              </Button>
-            </div>
-          </form>
+            </form>
+          ) : (
+            <VipUpgradePrompt />
+          )}
         </div>
       </div>
     </div>
   )
 }
 
-export default AIChat
+const VipUpgradePrompt = () => {
+  const navigate = useNavigate();
+
+  const handleUpgradeClick = () => {
+    navigate('/upgrade-vip');
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-gradient-to-r from-accent-500 to-orange-500 rounded-2xl p-6 text-white text-center"
+      >
+        <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+          <ApperIcon name="Crown" size={32} />
+        </div>
+        
+        <h3 className="text-xl font-bold mb-2">Upgrade to VIP for Unlimited Chat</h3>
+        <p className="text-white/90 mb-6 text-sm">
+          Get unlimited AI conversations, premium tools, and priority support. 
+          Unlock the full potential of ProMind AI.
+        </p>
+        
+        <div className="flex items-center justify-center space-x-6 text-sm mb-6">
+          <div className="flex items-center space-x-2">
+            <ApperIcon name="MessageCircle" size={16} />
+            <span>Unlimited Chat</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <ApperIcon name="Zap" size={16} />
+            <span>Premium Tools</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <ApperIcon name="Headphones" size={16} />
+            <span>Priority Support</span>
+          </div>
+        </div>
+        
+        <Button 
+          variant="secondary"
+          size="md"
+          onClick={handleUpgradeClick}
+          className="bg-white text-accent-600 hover:bg-gray-50 font-semibold"
+        >
+          <ApperIcon name="Crown" size={16} className="mr-2" />
+          Upgrade to VIP - $19.99/month
+        </Button>
+      </motion.div>
+    </div>
+);
+};
+
+export default AIChat;
