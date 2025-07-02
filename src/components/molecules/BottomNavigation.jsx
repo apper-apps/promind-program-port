@@ -4,9 +4,9 @@ import React from "react";
 import ApperIcon from "@/components/ApperIcon";
 
 const BottomNavigation = () => {
-  const navItems = [
+const navItems = [
     { path: '/', icon: 'Home', label: 'Home' },
-    { path: '/tools', icon: 'Wrench', label: 'Tools' },
+    { path: '/free-tools', icon: 'FileText', label: 'FreeTools' },
     { path: '/chat', icon: 'MessageCircle', label: 'Chat' },
     { path: '/profile', icon: 'User', label: 'Profile' }
   ];
