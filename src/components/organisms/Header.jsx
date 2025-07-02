@@ -30,11 +30,11 @@ const Header = ({ title, subtitle, showNotifications = true, user }) => {
           )}
         </div>
         
-        <div className="flex items-center space-x-3">
+<div className="flex items-center space-x-3">
           {user && (
             <div className="flex items-center space-x-2">
               <Badge variant={user.plan === 'vip' ? 'vip' : 'default'} size="sm">
-                {user.plan === 'vip' ? 'VIP' : 'Free'}
+                {user.plan === 'vip' ? '🌟 VIP' : 'Free'}
               </Badge>
             </div>
           )}
@@ -46,7 +46,7 @@ const Header = ({ title, subtitle, showNotifications = true, user }) => {
             >
               <ApperIcon name="Bell" size={20} />
             </motion.button>
-)}
+          )}
           
           <motion.button
             whileTap={{ scale: 0.95 }}
