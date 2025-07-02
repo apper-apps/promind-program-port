@@ -110,9 +110,9 @@ function Home() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl flex items-center justify-center shadow-lg">
-              <ApperIcon name="Brain" size={32} className="text-white" />
+<div className="flex justify-center mb-8">
+            <div className="w-20 h-20 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-3xl flex items-center justify-center shadow-xl">
+              <span className="text-white text-3xl font-bold">P</span>
             </div>
           </div>
           
@@ -123,7 +123,11 @@ function Home() {
             </span>
           </h1>
           
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-2">
+            Empowering professionals with intelligent AI tools designed to boost productivity and streamline your workflow
+          </p>
+          
+          <p className="text-base text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
             Choose your profession to get personalized AI tools and assistance tailored to your needs
           </p>
         </motion.div>
