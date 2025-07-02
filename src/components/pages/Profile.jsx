@@ -147,9 +147,9 @@ const handleApiKeyUpdate = async (newApiKey) => {
               <div>
                 <h3 className="text-lg font-bold mb-2">Upgrade to VIP</h3>
                 <p className="text-white/80 text-sm mb-3">
-                  Unlock all premium tools and features
+Unlock all premium tools and features
                 </p>
-                <Button variant="secondary" size="sm">
+                <Button variant="secondary" size="sm" onClick={() => navigate('/upgrade-vip')}>
                   <ApperIcon name="Crown" size={16} className="mr-2" />
                   Upgrade Now
                 </Button>
