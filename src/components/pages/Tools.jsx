@@ -8,6 +8,7 @@ import Loading from "@/components/ui/Loading";
 import Error from "@/components/ui/Error";
 import Empty from "@/components/ui/Empty";
 import { toolService } from "@/services/api/toolService";
+import { textToolService } from "@/services/api/textToolService";
 import { userService } from "@/services/api/userService";
 
 const Tools = () => {
@@ -25,13 +26,25 @@ const Tools = () => {
     try {
       setError('')
       setLoading(true)
-      
-      const [toolsData, userData] = await Promise.all([
+const [toolsData, textToolsData, userData] = await Promise.all([
         toolService.getAll(),
+        textToolService.getAll(),
         userService.getCurrentUser()
       ])
       
-      setTools(toolsData)
+      // Combine regular tools and text tools for unified display
+      const combinedTools = [
+        ...toolsData.map(tool => ({ ...tool, type: 'regular' })),
+        ...textToolsData.map(textTool => ({ 
+          ...textTool, 
+          type: 'text',
+          icon: 'FileText',
+          roles: ['doctor', 'pharmacist', 'developer', 'engineer', 'social media manager', 'teacher'],
+          requires_vip: false
+        }))
+      ];
+      
+setTools(combinedTools)
       setUser(userData)
     } catch (err) {
       setError('Failed to load tools. Please try again.')
@@ -41,19 +54,26 @@ const Tools = () => {
     }
   }
 
-  const handleToolSelect = (tool) => {
-    if (tool.requiresVIP && user?.plan !== 'vip') {
+const handleToolSelect = (tool) => {
+    if (tool.requires_vip && user?.plan !== 'vip') {
       toast.warning('This tool requires VIP access. Upgrade to unlock all features!')
       return
     }
     
-    toast.success(`Opening ${tool.name}...`)
-    // Here you would navigate to the specific tool or open a modal
+    if (tool.type === 'text') {
+      toast.success(`Opening text tool: ${tool.Name}...`)
+      // Navigate to text tool specific functionality
+    } else {
+      toast.success(`Opening ${tool.Name}...`)
+      // Here you would navigate to the specific tool or open a modal
+    }
   }
 
-  const filteredTools = tools.filter(tool => 
-    !user?.role || tool.roles.includes(user.role.toLowerCase())
-  )
+const filteredTools = tools.filter(tool => {
+    if (!user?.role) return true;
+    const userRole = user.role.toLowerCase();
+    return tool.roles && tool.roles.includes(userRole);
+  })
 
   if (loading) {
     return (
@@ -144,8 +164,8 @@ tool={{
           </div>
         )}
 
-        {/* VIP Upgrade Banner */}
-        {user?.plan === 'free' && filteredTools.some(tool => tool.requiresVIP) && (
+{/* VIP Upgrade Banner */}
+        {user?.plan === 'free' && filteredTools.some(tool => tool.requires_vip) && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

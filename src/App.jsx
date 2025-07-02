@@ -16,6 +16,8 @@ import VoiceToText from '@/components/pages/VoiceToText';
 import UserManagement from '@/components/pages/UserManagement';
 import ExternalApis from '@/components/pages/ExternalApis';
 import VipUpgrade from '@/components/pages/VipUpgrade';
+import QuickNotes from '@/components/pages/QuickNotes';
+import TextSummaries from '@/components/pages/TextSummaries';
 import Login from '@/components/pages/Login';
 import Signup from '@/components/pages/Signup';
 import Callback from '@/components/pages/Callback';
@@ -144,9 +146,11 @@ function AppContent() {
 <Route path="profile" element={<Profile />} />
             <Route path="role-selection" element={<RoleSelection />} />
 <Route path="voice" element={<VoiceToText />} />
-            <Route path="users" element={<UserManagement />} />
+<Route path="users" element={<UserManagement />} />
             <Route path="external-apis" element={<ExternalApis />} />
             <Route path="upgrade-vip" element={<VipUpgrade />} />
+            <Route path="quick-notes" element={<QuickNotes />} />
+            <Route path="text-summaries" element={<TextSummaries />} />
           </Route>
         </Routes>
         
