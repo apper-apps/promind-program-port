@@ -81,16 +81,16 @@ fields: [
     }
   }
 
-  async create(data) {
+async create(data) {
     try {
       const params = {
         records: [
           {
-            Name: data.name,
+            Name: data.Name || data.name,
             email: data.email,
             role: data.role,
             plan: data.plan || 'free',
-            joined_date: new Date().toISOString(),
+            joined_date: data.joined_date || new Date().toISOString(),
             last_active: new Date().toISOString(),
             Tags: data.Tags || '',
             Owner: data.Owner || null
@@ -98,12 +98,7 @@ fields: [
         ]
       };
       
-// Ensure params has records array structure for bulk creation
-      const createParams = {
-        records: Array.isArray(params.records) ? params.records : [params]
-      };
-      
-      const response = await this.apperClient.createRecord(this.tableName, createParams);
+      const response = await this.apperClient.createRecord(this.tableName, params);
       
       if (!response.success) {
         console.error(response.message);
@@ -111,7 +106,7 @@ fields: [
         return null;
       }
       
-      if (response.results) {
+      if (response.results && Array.isArray(response.results)) {
         const successfulRecords = response.results.filter(result => result.success);
         const failedRecords = response.results.filter(result => !result.success);
         
@@ -119,18 +114,23 @@ fields: [
           console.error(`Failed to create ${failedRecords.length} users:${JSON.stringify(failedRecords)}`);
           
           failedRecords.forEach(record => {
-            record.errors?.forEach(error => {
-              toast.error(`${error.fieldLabel}: ${error.message}`);
-            });
+            if (record.errors && Array.isArray(record.errors)) {
+              record.errors.forEach(error => {
+                toast.error(`${error.fieldLabel}: ${error.message}`);
+              });
+            }
             if (record.message) toast.error(record.message);
           });
         }
         
         return successfulRecords.length > 0 ? successfulRecords[0].data : null;
       }
+      
+      return null;
     } catch (error) {
       console.error("Error creating user:", error);
-      throw error;
+      toast.error("Failed to create user. Please try again.");
+      return null;
     }
   }
 
