@@ -100,9 +100,10 @@ async create(data) {
       
       const response = await this.apperClient.createRecord(this.tableName, params);
       
-      if (!response.success) {
-        console.error(response.message);
-        toast.error(response.message);
+if (!response.success) {
+        const errorMessage = response.message || 'An error occurred while creating user';
+        console.error(errorMessage);
+        toast.error(errorMessage);
         return null;
       }
       
