@@ -1,12 +1,14 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { toast } from 'react-toastify';
-import RoleCard from '@/components/molecules/RoleCard';
-import Button from '@/components/atoms/Button';
-import ApperIcon from '@/components/ApperIcon';
-import Loading from '@/components/ui/Loading';
-import { userService } from '@/services/api/userService';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import { setSelectedRole } from "@/store/userSlice";
+import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
+import RoleCard from "@/components/molecules/RoleCard";
+import Loading from "@/components/ui/Loading";
+import Login from "@/components/pages/Login";
 
 // Role data based on tool table roles field
 const roles = [
@@ -56,29 +58,22 @@ const roles = [
 
 function Home() {
   const navigate = useNavigate();
-  const [selectedRole, setSelectedRole] = useState(null);
+  const dispatch = useDispatch();
+const [selectedRoleLocal, setSelectedRoleLocal] = useState(null);
   const [loading, setLoading] = useState(false);
-
-const handleRoleSelect = async (roleId) => {
+  
+  const handleRoleSelect = (roleId) => {
     if (loading) return;
     
-    setSelectedRole(roleId);
+    setSelectedRoleLocal(roleId);
     setLoading(true);
 
     try {
-      // Create a temporary user record with the selected role
-      // Using only Updateable fields from app_User table schema
-      const userData = {
-        role: roleId,
-        Name: `${roleId} User`, // Temporary name - matches "Name" field
-        email: `temp_${roleId}@example.com`, // Temporary email - matches "email" field
-        plan: "free", // Default plan from picklist values
-        joined_date: new Date().toISOString() // Current timestamp in ISO format
-      };
-
-      await userService.create(userData);
+      // Store the selected role temporarily in Redux and sessionStorage
+      dispatch(setSelectedRole(roleId));
       
-      toast.success(`Role selected: ${roles.find(r => r.id === roleId)?.title}`);
+      const selectedRoleData = roles.find(r => r.id === roleId);
+      toast.success(`Role selected: ${selectedRoleData?.title}`);
       
       // Redirect to login after successful role selection
       setTimeout(() => {
@@ -109,9 +104,9 @@ const handleRoleSelect = async (roleId) => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+className="text-center mb-12"
         >
-<div className="flex justify-center mb-8">
+          <div className="flex justify-center mb-8">
             <div className="w-20 h-20 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-3xl flex items-center justify-center shadow-xl">
               <span className="text-white text-3xl font-bold">P</span>
             </div>
@@ -147,28 +142,28 @@ const handleRoleSelect = async (roleId) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 * index }}
               whileHover={{ y: -5 }}
-              className="cursor-pointer"
+className="cursor-pointer"
               onClick={() => handleRoleSelect(role.id)}
             >
               <RoleCard
                 role={role}
                 onSelect={() => handleRoleSelect(role.id)}
-                isSelected={selectedRole === role.id}
+                isSelected={selectedRoleLocal === role.id}
               />
             </motion.div>
           ))}
         </motion.div>
 
-        {/* Continue Button */}
+{/* Continue Button */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: selectedRole ? 1 : 0.5 }}
+          animate={{ opacity: selectedRoleLocal ? 1 : 0.5 }}
           transition={{ duration: 0.3 }}
           className="text-center"
         >
           <Button
-            onClick={() => selectedRole && handleRoleSelect(selectedRole)}
-            disabled={!selectedRole || loading}
+            onClick={() => selectedRoleLocal && handleRoleSelect(selectedRoleLocal)}
+            disabled={!selectedRoleLocal || loading}
             className="px-8 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white font-semibold rounded-xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
           >
             {loading ? (

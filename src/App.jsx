@@ -1,28 +1,29 @@
-import { createContext, useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { useDispatch, useSelector } from 'react-redux';
-import { ToastContainer } from 'react-toastify';
-import { setUser, clearUser } from '@/store/userSlice';
-import store from '@/store';
-import Layout from '@/components/organisms/Layout';
-import Home from '@/components/pages/Home';
-import Dashboard from '@/components/pages/Dashboard';
-import Tools from '@/components/pages/Tools';
-import AIChat from '@/components/pages/AIChat';
-import Profile from '@/components/pages/Profile';
-import RoleSelection from '@/components/pages/RoleSelection';
-import VoiceToText from '@/components/pages/VoiceToText';
-import UserManagement from '@/components/pages/UserManagement';
-import ExternalApis from '@/components/pages/ExternalApis';
-import VipUpgrade from '@/components/pages/VipUpgrade';
-import FreeTools from '@/components/pages/FreeTools';
-import Login from '@/components/pages/Login';
-import Signup from '@/components/pages/Signup';
-import Callback from '@/components/pages/Callback';
-import ErrorPage from '@/components/pages/ErrorPage';
-import ResetPassword from '@/components/pages/ResetPassword';
-import PromptPassword from '@/components/pages/PromptPassword';
+import React, { createContext, useEffect, useState } from "react";
+import { Route, Router, Routes, useNavigate } from "react-router-dom";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import { ToastContainer } from "react-toastify";
+import "@/index.css";
+import store from "@/store/index";
+import { clearSelectedRole, clearUser, setSelectedRole, setUser } from "@/store/userSlice";
+import Layout from "@/components/organisms/Layout";
+import ErrorPage from "@/components/pages/ErrorPage";
+import PromptPassword from "@/components/pages/PromptPassword";
+import Signup from "@/components/pages/Signup";
+import AIChat from "@/components/pages/AIChat";
+import UserManagement from "@/components/pages/UserManagement";
+import ExternalApis from "@/components/pages/ExternalApis";
+import Tools from "@/components/pages/Tools";
+import VipUpgrade from "@/components/pages/VipUpgrade";
+import Home from "@/components/pages/Home";
+import Dashboard from "@/components/pages/Dashboard";
+import Login from "@/components/pages/Login";
+import Callback from "@/components/pages/Callback";
+import VoiceToText from "@/components/pages/VoiceToText";
+import Profile from "@/components/pages/Profile";
+import ResetPassword from "@/components/pages/ResetPassword";
+import FreeTools from "@/components/pages/FreeTools";
+import RoleSelection from "@/components/pages/RoleSelection";
+import { userService } from "@/services/api/userService";
 
 // Create auth context
 export const AuthContext = createContext(null);
@@ -60,21 +61,33 @@ function AppContent() {
                            currentPath.includes('/callback') || currentPath.includes('/error') || 
                            currentPath.includes('/prompt-password') || currentPath.includes('/reset-password');
         
-        if (user) {
+if (user) {
           // User is authenticated
+          // Store user information in Redux first
+          dispatch(setUser(JSON.parse(JSON.stringify(user))));
+          
+          // Check if there's a selected role to update
+          const storedRole = sessionStorage.getItem('selectedRole') || userState?.selectedRole;
+          if (storedRole) {
+            try {
+              await userService.updateUserRole(storedRole);
+              dispatch(clearSelectedRole());
+            } catch (error) {
+              console.error('Failed to update user role:', error);
+            }
+          }
+          
           if (redirectPath) {
             navigate(redirectPath);
           } else if (!isAuthPage) {
             if (!currentPath.includes('/login') && !currentPath.includes('/signup')) {
               navigate(currentPath);
-} else {
+            } else {
               navigate('/dashboard');
             }
           } else {
             navigate('/dashboard');
           }
-          // Store user information in Redux
-          dispatch(setUser(JSON.parse(JSON.stringify(user))));
         } else {
           // User is not authenticated
           if (!isAuthPage) {
@@ -135,14 +148,14 @@ function AppContent() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/callback" element={<Callback />} />
           <Route path="/error" element={<ErrorPage />} />
-          <Route path="/prompt-password/:appId/:emailAddress/:provider" element={<PromptPassword />} />
+<Route path="/prompt-password/:appId/:emailAddress/:provider" element={<PromptPassword />} />
           <Route path="/reset-password/:appId/:fields" element={<ResetPassword />} />
-<Route path="/" element={<Home />} />
-          <Route path="/" element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route element={<Layout />}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="tools" element={<Tools />} />
             <Route path="chat" element={<AIChat />} />
-<Route path="profile" element={<Profile />} />
+            <Route path="profile" element={<Profile />} />
             <Route path="role-selection" element={<RoleSelection />} />
 <Route path="voice" element={<VoiceToText />} />
 <Route path="users" element={<UserManagement />} />

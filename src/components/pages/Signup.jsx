@@ -33,14 +33,20 @@ function Signup() {
             </div>
           </div>
         </div>
-        <div id="authentication" />
-        <div className="text-center mt-4">
+<div id="authentication" />
+        <div className="text-center mt-4 space-y-3">
           <p className="text-sm text-surface-600 dark:text-surface-400">
             Already have an account?{' '}
             <Link to="/login" className="font-medium text-primary hover:text-primary-dark">
               Sign in
             </Link>
           </p>
+          <Link 
+            to="/" 
+            className="inline-block text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 underline transition-colors duration-200"
+          >
+            ← Back to Role Selection
+          </Link>
         </div>
       </div>
     </div>
