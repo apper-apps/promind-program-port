@@ -55,7 +55,7 @@ const VoiceToText = () => {
     toast.info('Recording started...')
   }
 
-  const handleStopRecording = async () => {
+const handleStopRecording = async () => {
     setIsRecording(false)
     
     try {
@@ -66,7 +66,7 @@ setTranscription(mockTranscription)
       const newRecording = await voiceService.saveRecording({
         duration: recordingTime,
         transcription: mockTranscription,
-        userId: user?.Id || authUser?.userId || 'anonymous'
+        userId: String(user?.Id || authUser?.userId || 'anonymous')
       });
       
       setRecordings(prev => [newRecording, ...prev])

@@ -53,10 +53,10 @@ class VoiceService {
     }
   }
 
-  async saveRecording(data) {
+async saveRecording(data) {
     return await this.create({
       Name: data.transcription?.substring(0, 50) + (data.transcription?.length > 50 ? '...' : '') || 'Voice Recording',
-      user_id: data.userId || 'anonymous',
+      user_id: String(data.userId || 'anonymous'),
       duration: data.duration,
       transcription: data.transcription,
       timestamp: new Date().toISOString(),
@@ -92,13 +92,13 @@ class VoiceService {
     }
   }
 
-  async create(data) {
+async create(data) {
     try {
       const params = {
         records: [
           {
             Name: data.Name,
-            user_id: data.user_id,
+            user_id: String(data.user_id),
             duration: data.duration,
             transcription: data.transcription,
             timestamp: data.timestamp,
